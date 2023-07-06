@@ -8,4 +8,6 @@ const product = require('./routes/ProductRoute');
 
 app.use('/api/v1', product);
 
+// Middleware to handle errors
+
 module.exports = app;
