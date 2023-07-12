@@ -1,8 +1,10 @@
-const Product = require('../models/productModel')
+const Product = require('../models/productModel');
+const ApiFeatures = require('../utils/apiFeatures');
+
 // Create new product => /api/v1/admin/product/new
 
 // creaote the product --Admin
-exports.createProduct = async (req, res, next) => {
+exports.createProduct = async (req, res) => {
     try {
         const product = await Product.create(req.body);
 
@@ -24,11 +26,13 @@ exports.createProduct = async (req, res, next) => {
 // Get all products => /api/v1/products
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-
+        const productsCount = await Product.countDocuments();
+        const apiFeature = new ApiFeatures(Product.find(), req.query).search().filter().pagination(5);
+        const productsData = await apiFeature.query;
         res.status(200).json({
             success: true,
-            products,
+            productsCount,
+            products: productsData,
         });
     } catch (error) {
         // Handle any potential errors
@@ -39,7 +43,6 @@ exports.getAllProducts = async (req, res) => {
         });
     }
 };
-
 
 // Get single product details => /api/v1/product/:id
 exports.getProductDetails = async (req, res, next) => {
@@ -114,4 +117,3 @@ exports.deleteProduct = async (req, res, next) => {
         });
     }
 };
-
