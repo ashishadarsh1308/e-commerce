@@ -1,7 +1,7 @@
 const Product = require('../models/productModel');
 const ApiFeatures = require('../utils/apiFeatures');
 
-// Create new product => /api/v1/admin/product/new
+// Create new product => /api/v1/product/new
 
 // creaote the product --Admin
 exports.createProduct = async (req, res) => {
