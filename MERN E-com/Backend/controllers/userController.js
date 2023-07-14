@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const sendToken = require('../utils/jwtToken');
 
 exports.registerUser = async (req, res) => {
     try {
@@ -23,10 +24,7 @@ exports.registerUser = async (req, res) => {
             }
         });
 
-        res.status(201).json({
-            success: true,
-            user,
-        });
+       sendToken(user, 201, res);
 
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
@@ -44,3 +42,49 @@ exports.registerUser = async (req, res) => {
         });
     }
 };
+
+
+// Login user
+exports.loginUser = async (req, res) => {
+    try {
+
+        const { email, password } = req.body;
+
+        // Check if email and password is entered by user
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter email and password',
+            });
+        }
+
+        // Finding user in database
+        const user = await User.findOne({ email }).select('+password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Invalid email or password',
+            });
+        }
+
+        // Check if password is correct or not
+        const isPasswordMatched = await user.comparePassword(password);
+
+        if (!isPasswordMatched) {
+            return res.status(404).json({
+                success: false,
+                message: 'Invalid email or password',
+            });
+        }
+
+        sendToken(user, 200, res);
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred',
+            error: error.message,
+        });        
+    }
+}
