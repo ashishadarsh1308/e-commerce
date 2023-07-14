@@ -1,9 +1,7 @@
 const Product = require('../models/productModel');
 const ApiFeatures = require('../utils/apiFeatures');
 
-// Create new product => /api/v1/product/new
-
-// creaote the product --Admin
+//! creaote the product --Admin
 exports.createProduct = async (req, res) => {
     try {
 
@@ -26,7 +24,7 @@ exports.createProduct = async (req, res) => {
 };
 
 
-// Get all products => /api/v1/products
+//* Get all products => /api/v1/products
 exports.getAllProducts = async (req, res) => {
     try {
         const productsCount = await Product.countDocuments();
@@ -47,7 +45,7 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-// Get single product details => /api/v1/product/:id
+//* Get single product details => /api/v1/product/:id
 exports.getProductDetails = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -71,7 +69,7 @@ exports.getProductDetails = async (req, res, next) => {
     }
 }
 
-// update product --Admin
+//! update product --Admin
 exports.updateProduct = async (req, res, next) => {
     let product = await Product.findById(req.params.id);
 
@@ -93,7 +91,7 @@ exports.updateProduct = async (req, res, next) => {
     })
 }
 
-//delete product --Admin
+//! delete product --Admin
 exports.deleteProduct = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -113,6 +111,59 @@ exports.deleteProduct = async (req, res, next) => {
         });
     } catch (error) {
         // Handle any potential errors
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred',
+            error: error.message,
+        });
+    }
+};
+
+//* Create new review 
+exports.createProductReview = async (req, res, next) => {
+    try {
+        const { rating, comment, productId } = req.body;
+
+        const review = {
+            user: req.user._id,
+            name: req.user.name,
+            rating: Number(rating),
+            comment: comment
+        };
+
+        const product = await Product.findById(productId);
+
+        const isReviewed = product.reviews.find(
+            rev => rev.user.toString() === req.user._id.toString()
+        );
+
+        if (isReviewed) {
+            product.reviews.forEach((rev) => {
+                if (rev.user.toString() === req.user._id.toString())
+                    (rev.rating = rating), (rev.comment = comment);
+            });
+        } else {
+            product.reviews.push(review);
+            product.numOfReviews = product.reviews.length;
+        }
+
+        let avg = 0;
+
+        product.reviews.forEach((rev) => {
+            avg += rev.rating;
+        });
+
+        product.ratings = avg / product.reviews.length;
+
+        await product.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+        });
+
+    } catch (error) {
+        // Handle any potential errors
+        console.error(error);
         res.status(500).json({
             success: false,
             message: 'An error occurred',

@@ -3,7 +3,7 @@ const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 
-// Register user ----------------------------------------------------------------------------------------------------------
+//& Register user ----------------------------------------------------------------------------------------------------------
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -47,7 +47,7 @@ exports.registerUser = async (req, res) => {
 };
 
 
-// Login user ----------------------------------------------------------------------------------------------------------
+//& Login user ----------------------------------------------------------------------------------------------------------
 exports.loginUser = async (req, res) => {
     try {
 
@@ -92,7 +92,7 @@ exports.loginUser = async (req, res) => {
     }
 }
 
-// Logout user ----------------------------------------------------------------------------------------------------------
+//^ Logout user ----------------------------------------------------------------------------------------------------------
 exports.logoutUser = async (req, res) => {
     try {
 
@@ -111,7 +111,7 @@ exports.logoutUser = async (req, res) => {
     }
 }
 
-// Forgot password ----------------------------------------------------------------------------------------------------------
+//* Forgot password ----------------------------------------------------------------------------------------------------------
 exports.forgotPassword = async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email });
@@ -165,7 +165,7 @@ exports.forgotPassword = async (req, res) => {
 
 }
 
-// Reset password (3:00:00)-------------------------------------------------------------------------------------------
+//* Reset password (3:00:00)-------------------------------------------------------------------------------------------
 exports.resetPassword = async (req, res) => {
     try {
         // Hash URL token
@@ -211,7 +211,7 @@ exports.resetPassword = async (req, res) => {
     }
 };
 
-// Get currently logged in user details (accessed only by those who is already logged in)------------------------------
+//* Get currently logged in user details (accessed only by those who is already logged in)------------------------------
 exports.getUserDetails = async (req, res) => {
     try {
 
@@ -231,7 +231,7 @@ exports.getUserDetails = async (req, res) => {
     }
 }
 
-// Update / Change password --------------------------------------------------------------------------------------------
+//* Update / Change password --------------------------------------------------------------------------------------------
 exports.updatePassword = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('+password');
@@ -264,7 +264,7 @@ exports.updatePassword = async (req, res) => {
     }
 }
 
-// Update user profile --------------------------------------------------------------------------------------------
+//* Update user profile --------------------------------------------------------------------------------------------
 exports.updateProfile = async (req, res) => {
     try {
         const userData = {
@@ -297,7 +297,7 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-// Get all users (only for admin) --------------------------------------------------------------------------------------
+//! Get all users (only for admin) --------------------------------------------------------------------------------------
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
@@ -315,7 +315,7 @@ exports.getAllUsers = async (req, res) => {
     }
 }
 
-// Get SINGLE user(only for admin) --------------------------------------------------------------------------------------
+// !Get SINGLE user(only for admin) --------------------------------------------------------------------------------------
 exports.getSingleUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -340,7 +340,7 @@ exports.getSingleUser = async (req, res) => {
     }
 }
 
-// Update user role (only for admin) --------------------------------------------------------------------------------------
+// !Update user role (only for admin) --------------------------------------------------------------------------------------
 exports.updateUserRole = async (req, res) => {
     try {
         const newUserData = {
@@ -380,7 +380,7 @@ exports.updateUserRole = async (req, res) => {
     }
 }
 
-// Delete user (only for admin) --------------------------------------------------------------------------------------
+// !Delete user (only for admin) --------------------------------------------------------------------------------------
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
