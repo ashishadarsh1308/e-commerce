@@ -6,7 +6,7 @@ app.use(express.json()); // to parse json data
 app.use(cookieParser()); // to parse cookie data
 
 // root import
-const product = require('./routes/ProductRoute');
+const product = require('./routes/ProductRoute'); // import product route
 const user = require('./routes/userRoute');
 const order = require('./routes/orderRoute');
 
