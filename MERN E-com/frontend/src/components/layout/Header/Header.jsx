@@ -3,12 +3,14 @@ import { ReactNavbar } from "overlay-navbar"
 import { MdAccountCircle } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
 import { MdAddShoppingCart } from "react-icons/md";
+import './Header.css'
 
 const options = {
-    burgerColorHover: "#eb4034",
+    burgerColor: "#eb4034",
+    burgerColorHover: "rgba(135, 35, 35,0.8)",
     logo: "./images/logo.png",
     logoWidth: "20vmax",
-    navColor1: "rgba(254, 225, 255,0.8)",
+    navColor1: "rgba(255, 255, 255,0.8)",
     logoHoverSize: "10px",
     logoHoverColor: "#eb4034",
     link1Text: "Home",
@@ -19,7 +21,7 @@ const options = {
     link2Url: "/products",
     link3Url: "/contact",
     link4Url: "/about",
-    link1Size: "1.3vmax",
+    link1Size: "2.0vmax",
     link1Color: "rgba(35, 35, 35,0.8)",
     nav1justifyContent: "flex-end",
     nav2justifyContent: "flex-end",
@@ -49,8 +51,6 @@ const Header = () => {
             <ReactNavbar
                 {...options}
             />
-
-
         </div>
     )
 }
