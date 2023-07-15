@@ -4,8 +4,10 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-    getProductDetails, 
-    createProductReview} = require('../controllers/productController');
+    getProductDetails,
+    getProductReviews,
+    createProductReview,
+    deleteReview } = require('../controllers/productController');
 const { isAuthenticatedUser, authrorizeRoles } = require('../middleware/auth');
 
 const router = express.Router();
@@ -19,5 +21,6 @@ router.route("/admin/product/:id")
     .delete(isAuthenticatedUser, authrorizeRoles('admin'), deleteProduct)
 
 router.route('/review').put(isAuthenticatedUser, createProductReview)
+router.route('/reviews').get(getProductReviews).delete(isAuthenticatedUser, deleteReview);
 
 module.exports = router;

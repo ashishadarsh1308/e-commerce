@@ -171,3 +171,89 @@ exports.createProductReview = async (req, res, next) => {
         });
     }
 };
+
+
+//* Get product reviews
+exports.getProductReviews = async (req, res, next) => {
+    try {
+
+        const product = await Product.findById(req.query.id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            reviews: product.reviews,
+        });
+
+    } catch (error) {
+        // Handle any potential errors
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred',
+            error: error.message,
+        });
+    }
+};
+
+//! Delete product review
+exports.deleteReview = async (req, res, next) => {
+    try {
+
+        const product = await Product.findById(req.query.productId);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
+
+        const reviews = product.reviews.filter(
+            (rev) => rev._id.toString() !== req.query.id.toString()
+        );
+
+        let avg = 0;
+
+        reviews.forEach((rev) => {
+            avg += rev.rating;
+        });
+
+        const ratings = avg / reviews.length;
+        const numOfReviews = reviews.length;
+
+        await Product.findByIdAndUpdate(
+            req.query.productId,
+            {
+                reviews,
+                ratings,
+                numOfReviews,
+            },
+            {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+        });
+
+
+    } catch (error) {
+        // Handle any potential errors
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred',
+            error: error.message,
+        });
+    }
+};
