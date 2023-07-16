@@ -28,7 +28,7 @@ exports.createProduct = async (req, res) => {
 exports.getAllProducts = async (req, res) => {
     try {
         const productsCount = await Product.countDocuments();
-        const apiFeature = new ApiFeatures(Product.find(), req.query).search().filter().pagination(5);
+        const apiFeature = new ApiFeatures(Product.find(), req.query).search().filter().pagination(8);
         const productsData = await apiFeature.query;
         res.status(200).json({
             success: true,
