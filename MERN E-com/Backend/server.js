@@ -18,11 +18,11 @@ app.listen(PORT, () => {
 
 
 
-// Red (!)
-// Blue (?)
-// Green (*)
-// Yellow (^)
-// Pink (&)
+//! Red (!)
+//? Blue (?)
+//* Green (*)
+//^ Yellow (^)
+//& Pink (&)
 // Purple (~)
-// Mustard (todo)
+// todo Mustard (todo)
 // Grey (//)
