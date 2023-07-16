@@ -27,7 +27,7 @@
     cursor: pointer;
     background-color: white;
     border: 1px solid white;
-    border-radius: 0;
+    border-radius: 5px;
     padding: 1vmax;
     transition: all 0.5s;
     width: 9vmax;
@@ -37,6 +37,8 @@
 .banner>a>button:hover {
     background-color: rgba(255, 255, 255, 0);
     color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .banner::after {

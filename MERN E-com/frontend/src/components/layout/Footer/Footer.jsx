@@ -5,7 +5,6 @@ const Footer = () => {
     return (
         <footer id='footer'>
             <div className='leftFooter'>
-                <h4>DOWNLOAD OUR APP</h4>
                 <p>Download App for Android and IOS phone</p>
                 <img src="/images/Appstore.png" alt="" />
                 <img src="/images/Playstore.png" alt="" />
