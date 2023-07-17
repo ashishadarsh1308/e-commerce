@@ -4,11 +4,12 @@ import { MdAccountCircle } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
 import { MdAddShoppingCart } from "react-icons/md";
 import './Header.css'
+import Logo from './logo.png'
 
 const options = {
     burgerColor: "#eb4034",
     burgerColorHover: "rgba(135, 35, 35,0.8)",
-    logo: "./images/logo.png",
+    logo: Logo,
     logoWidth: "20vmax",
     navColor1: "rgba(255, 255, 255,0.8)",
     logoHoverSize: "10px",

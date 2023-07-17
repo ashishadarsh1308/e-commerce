@@ -1,9 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import ReactStarts from 'react-rating-stars-component'
+import React, { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import ReactStars from 'react-rating-stars-component'
 
-
-const Product = ({ product }) => { // Updated prop name to 'product'
+const ProductCard = ({ product }) => {
     const options = {
         value: product.ratings,
         edit: false,
@@ -13,12 +12,19 @@ const Product = ({ product }) => { // Updated prop name to 'product'
         precision: 0.5,
         size: window.innerWidth < 768 ? 20 : 25
     }
+
+    const location = useLocation()
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location.pathname])
+
     return (
-        <Link className="productCard" to={`/product/${product._id}`}>
+        <Link className="productCard" to={`/product/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
             <img src={product.images[0].url} alt={product.name} />
             <p>{product.name}</p>
             <div>
-                <ReactStarts {...options} />{" "}
+                <ReactStars {...options} />{" "}
                 <span className="productCardSpan">
                     {" "}
                     ({product.numOfReviews} Reviews)
@@ -29,4 +35,4 @@ const Product = ({ product }) => { // Updated prop name to 'product'
     )
 }
 
-export default Product
+export default ProductCard

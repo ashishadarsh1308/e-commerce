@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { CgMouse } from 'react-icons/cg'
 import './Home.css'
-import Product from './Product'
+import ProductCard from './ProductCard'
 import MetaData from '../layout/MetaData'
 import { getProducts } from '../../actions/productAction'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +11,7 @@ import { useAlert } from 'react-alert'
 const Home = () => {
     const alert = useAlert()
     const dispatch = useDispatch()
+    
     const { products, loading, error } = useSelector(
         state => state.products
     )
@@ -46,7 +47,7 @@ const Home = () => {
 
                     <div className="container" id="container">
                         {products && products.map(product => (
-                            <Product key={product._id} product={product} />
+                            <ProductCard key={product._id} product={product} />
                         ))}
                     </div>
 
