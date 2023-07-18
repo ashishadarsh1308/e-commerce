@@ -7,10 +7,13 @@ import ProductCard from '../Home/ProductCard'
 import { useAlert } from 'react-alert'
 import { useParams } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
+import Slider from "r-range-slider";
 
 const Products = () => {
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [price, setPrice] = useState([1, 50000]);
+  const [searchButtonClicked, setSearchButtonClicked] = useState(false); // State to track if search button is clicked
 
   const dispatch = useDispatch()
   const alert = useAlert()
@@ -21,7 +24,15 @@ const Products = () => {
     setCurrentPage(pageNumber)
   }
 
-  const { products, loading, error, productsCount, resultPerPage } = useSelector(
+  const priceHandler = (data) => {
+    setPrice(data)
+  }
+
+  const handleSearch = () => {
+    setSearchButtonClicked(true);
+  };
+
+  const { products, loading, error, productsCount, resultPerPage,  } = useSelector(
     state => state.products
   )
 
@@ -29,8 +40,15 @@ const Products = () => {
     if (error) {
       return alert.error(error)
     }
-    dispatch(getProducts(keyword, currentPage))
-  }, [dispatch, alert, error, currentPage, keyword])
+    dispatch(getProducts(keyword, currentPage, price))
+  }, [dispatch, alert, error, currentPage, keyword, price])
+
+  useEffect(() => {
+    if (searchButtonClicked) {
+      dispatch(getProducts(keyword, currentPage, price))
+      setSearchButtonClicked(false);
+    }
+  }, [dispatch, searchButtonClicked, keyword, currentPage, price]);
 
   return (
     <Fragment>
@@ -46,9 +64,29 @@ const Products = () => {
             ))}
           </div>
 
-          <div className="paginationBox">
+          <div className="filterBox">
+            <Slider
+              onChange={priceHandler}
+              attrs={{ className: 'my-slider' }}
+              start={0}
+              end={50000}
+              points={price}
+              fillStyle={(index) => {
+                if (index === 1) {
+                  return { background: 'tomato' };
+                }
+              }}
+              markStyle={(index) => {
+                if (index === 0 || index === 2) {
+                  return { background: 'tomato' };
+                }
+              }}
+            />
+            <button className='pricebutton' onClick={handleSearch}>Rs. 🔍</button>
+          </div>
 
-            {resultPerPage <= productsCount && (
+          {resultPerPage <= productsCount && (
+            <div className="paginationBox">
               <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={resultPerPage}
@@ -63,14 +101,12 @@ const Products = () => {
                 activeClass="pageItemActive"
                 activeLinkClass="pageLinkActive"
               />
-            )}
-
-          </div>
-
+            </div>
+          )}
         </Fragment>
       )}
     </Fragment>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;

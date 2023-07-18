@@ -11,7 +11,7 @@ const options = {
     burgerColorHover: "rgba(135, 35, 35,0.8)",
     logo: Logo,
     logoWidth: "20vmax",
-    navColor1: "rgba(255, 255, 255,0.8)",
+    navColor1: "rgba(255, 99, 71,0.3)",
     logoHoverSize: "10px",
     logoHoverColor: "#eb4034",
     link1Text: "Home",
@@ -49,6 +49,7 @@ const options = {
 const Header = () => {
     return (
         <div>
+
             <ReactNavbar
                 {...options}
             />
