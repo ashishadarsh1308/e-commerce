@@ -77,13 +77,20 @@
 
 .categoryBox {
     padding: 0%;
+    padding-top: 20px;
+}
+
+.categoryP {
+    font: 400 1.2vmax "Roboto";
+    color: rgba(0, 0, 0, 0.61);
 }
 
 .category-link {
     list-style: none;
     color: rgba(0, 0, 0, 0.61);
     font: 400 0.8vmax "Roboto";
-    margin: 0.4vmax;
+    margin-top: 0.4vmax;
+    margin-left: 0.2vmax;
     cursor: pointer;
     transition: all 0.5s;
 }

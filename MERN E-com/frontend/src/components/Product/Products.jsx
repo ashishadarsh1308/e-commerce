@@ -9,11 +9,28 @@ import { useParams } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
 import Slider from "r-range-slider";
 
+const categories = [
+  'Electronics',
+  'Cameras',
+  'Laptop',
+  'Accessories',
+  'Headphones',
+  'Food',
+  "Books",
+  'Clothes/Shoes',
+  'Beauty/Health',
+  'Sports',
+  'Outdoor',
+  'Home',
+  'Mobile'
+]
+
 const Products = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([1, 50000]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false); // State to track if search button is clicked
+  const [category, setCategory] = useState(''); // State to track category
 
   const dispatch = useDispatch()
   const alert = useAlert()
@@ -32,23 +49,27 @@ const Products = () => {
     setSearchButtonClicked(true);
   };
 
-  const { products, loading, error, productsCount, resultPerPage,  } = useSelector(
-    state => state.products
-  )
+  const { products, loading, error, productsCount, resultPerPage } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
     if (error) {
-      return alert.error(error)
+      return alert.error(error);
     }
-    dispatch(getProducts(keyword, currentPage, price))
-  }, [dispatch, alert, error, currentPage, keyword, price])
-
-  useEffect(() => {
     if (searchButtonClicked) {
-      dispatch(getProducts(keyword, currentPage, price))
+      // dispatch(getProducts(  price, category)); 
       setSearchButtonClicked(false);
     }
-  }, [dispatch, searchButtonClicked, keyword, currentPage, price]);
+    dispatch(getProducts(keyword, currentPage, price, category)); 
+  }, [dispatch, alert, error, currentPage, keyword, price, category, searchButtonClicked]); 
+
+  // useEffect(() => {
+  //   if (searchButtonClicked) {
+  //     dispatch(getProducts(keyword, currentPage, price, category)); 
+  //     setSearchButtonClicked(false);
+  //   }
+  // }, [dispatch, searchButtonClicked, keyword, currentPage, price, category]);
 
   return (
     <Fragment>
@@ -57,12 +78,6 @@ const Products = () => {
       ) : (
         <Fragment>
           <h2 className='productsHeading'>Products</h2>
-
-          <div className="products">
-            {products && products.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
 
           <div className="filterBox">
             <Slider
@@ -83,6 +98,25 @@ const Products = () => {
               }}
             />
             <button className='pricebutton' onClick={handleSearch}>Rs. 🔍</button>
+
+            <ul className='categoryBox'>
+              <p className='categoryP'>Categories</p>
+              {categories.map(category => (
+                <li
+                  className='category-link'
+                  key={category}
+                  onClick={() => setCategory(category)}
+                >
+                  {category}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="products">
+            {products && products.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
 
           {resultPerPage <= productsCount && (
