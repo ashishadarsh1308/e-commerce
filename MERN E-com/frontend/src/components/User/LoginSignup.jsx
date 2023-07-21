@@ -5,7 +5,7 @@ import './LoginSignup.css'
 import { AiFillUnlock, AiTwotoneMail } from 'react-icons/ai'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearErrors, login } from '../../actions/userAction'
+import { clearErrors, login, register } from '../../actions/userAction'
 import { useAlert } from 'react-alert'
 import Loader from '../layout/Loader/Loader'
 
@@ -78,8 +78,8 @@ const LoginSignup = () => {
         myForm.append('name', name)
         myForm.append('email', email)
         myForm.append('password', password)
-        // myForm.append('avatar', avatar)
-        console.log("signup form submitted", myForm)
+        myForm.append('avatar', avatar)
+        dispatch(register(myForm))
     }
 
     const registerDataChange = (e) => {
