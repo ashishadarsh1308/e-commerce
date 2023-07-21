@@ -61,8 +61,8 @@ const Products = () => {
       // dispatch(getProducts(  price, category)); 
       setSearchButtonClicked(false);
     }
-    dispatch(getProducts(keyword, currentPage, price, category));
-  }, [dispatch, alert, error, currentPage, keyword, price, category, searchButtonClicked]);
+    dispatch(getProducts(keyword, currentPage, price, category)); 
+  }, [dispatch, alert, error, currentPage, keyword, price, category, searchButtonClicked]); 
 
   // useEffect(() => {
   //   if (searchButtonClicked) {
@@ -78,12 +78,6 @@ const Products = () => {
       ) : (
         <Fragment>
           <h2 className='productsHeading'>Products</h2>
-
-          <div className="products">
-            {products && products.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
 
           <div className="filterBox">
             <Slider
@@ -117,6 +111,12 @@ const Products = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="products">
+            {products && products.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
 
           {resultPerPage <= productsCount && (

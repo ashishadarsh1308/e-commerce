@@ -1,6 +1,9 @@
 const app = require('./app');
 const dotenv = require('dotenv');
+const cors = require('cors'); // Import the 'cors' middleware
 const connectDatabase = require('./config/database');
+
+app.use(cors()); // Use 'cors' middleware to allow cross-origin requests
 
 // configure dotenv
 dotenv.config({ path: "backend/config/config.env" });

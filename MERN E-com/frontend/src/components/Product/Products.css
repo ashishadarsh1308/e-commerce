@@ -102,6 +102,8 @@
 
 .filterBox>fieldset {
     border: 1px solid tomato;
+    border-radius: 5px;
+    padding: 0.5vmax;
 }
 
 .my-slider .r-range-slider-fill[data-index="1"] {
@@ -117,11 +119,11 @@
     background-color: rgb(255, 255, 255);
     border: 1px solid tomato;
     padding: 0.5vmax 1vmax;
+    margin: 0.5vmax 0.5vmax;
     font: 400 0.8vmax "Roboto";
     color: tomato;
     cursor: pointer;
     transition: all 0.5s;
-    border-radius: 8px;
 }
 
 .pricebutton:hover {
