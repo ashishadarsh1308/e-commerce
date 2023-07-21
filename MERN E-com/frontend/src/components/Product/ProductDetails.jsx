@@ -1,9 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
-import store from '../../store'
 import { getProductDetails } from '../../actions/productAction'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { Carousel } from "react-responsive-carousel";
 import './ProductDetails.css'
 import ReactStarts from 'react-rating-stars-component'
 import ReviewCard from "./ReviewCard.js";
@@ -19,10 +17,15 @@ const ProductDetails = () => {
     )
 
     useEffect(() => {
+
+        if (error) {
+            alert.error(error)
+        }
+
         if (id && id !== '') {
             dispatch(getProductDetails(id));
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, error]);
 
     const options = {
         value: product.ratings,
