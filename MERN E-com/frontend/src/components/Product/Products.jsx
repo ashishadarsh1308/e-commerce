@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
 import Slider from "r-range-slider";
 import MetaData from '../layout/MetaData'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 const categories = [
   'Electronics',
@@ -99,7 +100,7 @@ const Products = () => {
                 }
               }}
             />
-            <button className='pricebutton' onClick={handleSearch}>Rs. 🔍</button>
+            <button className='pricebutton' onClick={handleSearch}> <AiOutlineSearch/> </button>
 
             <ul className='categoryBox'>
               <p className='categoryP'>Categories</p>
