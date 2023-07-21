@@ -1,10 +1,19 @@
-import React, { Fragment, useState, useRef } from 'react'
+import React, { Fragment, useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './LoginSignup.css'
-import { AiFillFileImage, AiFillUnlock, AiTwotoneMail } from 'react-icons/ai'
+import { AiFillUnlock, AiTwotoneMail } from 'react-icons/ai'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearErrors, login } from '../../actions/userAction'
+import { useAlert } from 'react-alert'
+import Loader from '../layout/Loader/Loader'
 
 const LoginSignup = () => {
+
+    const dispatch = useDispatch()
+    const alert = useAlert()
+    const navigate = useNavigate()
 
     const loginTab = useRef(null)
     const registerTab = useRef(null)
@@ -21,9 +30,23 @@ const LoginSignup = () => {
 
     const { name, email, password } = user;
 
+    const { error, loading, isAuthenticated } = useSelector(
+        (state) => state.user
+    );
+
     const [avatar, setAvatar] = useState("/images/Profile.png");
     const [avatarPreview, setAvatarPreview] = useState("/images/Profile.png");
 
+    useEffect(() => {
+        if (error) {
+            alert.error(error)
+            dispatch(clearErrors())
+        }
+        if (isAuthenticated) {
+            alert.success("Login Successful")
+            navigate('/account')
+        }
+    }, [dispatch, alert, error, isAuthenticated, navigate])
 
     const switchTabs = (e, tab) => {
         if (tab === "login") {
@@ -44,7 +67,7 @@ const LoginSignup = () => {
 
     const loginSubmit = (e) => {
         e.preventDefault()
-        console.log("Login Submit")
+        dispatch(login(loginEmail, loginPassword))
     }
 
     const registerSubmit = (e) => {
@@ -76,92 +99,96 @@ const LoginSignup = () => {
 
     return (
         <Fragment>
-            <div className="LoginSignUpContainer">
-                <div className="LoginSignUpBox">
-                    <div>
-                        <div className="login_signUp_toggle">
-                            <p onClick={(e) => switchTabs(e, "login")}>LOGIN</p>
-                            <p onClick={(e) => switchTabs(e, "register")}>REGISTER</p>
-                        </div>
-                        <button ref={switcherTab}></button>
-                    </div>
-                    <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
-                        <div className="loginEmail">
-                            < AiTwotoneMail />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                required
-                                value={loginEmail}
-                                onChange={(e) => setLoginEmail(e.target.value)}
-                            />
-                        </div>
-                        <div className="loginPassword">
-                            <AiFillUnlock />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                required
-                                value={loginPassword}
-                                onChange={(e) => setLoginPassword(e.target.value)}
-                            />
-                        </div>
-                        <Link to="/password/forgot">Forget Password ?</Link>
-                        <input type="submit" value="Login" className="loginBtn" />
-                    </form>
-                    <form className="signUpForm" ref={registerTab} encType='multipar/form-data' onSubmit={registerSubmit}>
-                        <div id="registerImage" className="registerImage">
-                            <img src={avatarPreview} alt="Avatar Preview" />
-                            <input
-                                type="file"
-                                name="avatar"
-                                accept="image/*"
-                                onChange={registerDataChange}
-                            />
-                        </div>
-                        <div className="signUpName">
-                            < MdDriveFileRenameOutline />
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                required
-                                name='name'
-                                value={name}
-                                onChange={registerDataChange}
-                            />
-                        </div>
-                        <div className="signUpEmail">
-                            < AiTwotoneMail />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                required
-                                name="email"
-                                value={email}
-                                onChange={registerDataChange}
-                            />
-                        </div>
-                        <div className="signUpPassword">
-                            <AiFillUnlock />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                required
-                                name="password"
-                                value={password}
-                                onChange={registerDataChange}
-                            />
-                        </div>
-                        <input
-                            type="submit"
-                            value="Register"
-                            className="signUpBtn"
-                        // disabled= {loading ? true : false}
-                        />
-                    </form>
+            {loading ? <Loader /> : (
+                <Fragment>
+                    <div className="LoginSignUpContainer">
+                        <div className="LoginSignUpBox">
+                            <div>
+                                <div className="login_signUp_toggle">
+                                    <p onClick={(e) => switchTabs(e, "login")}>LOGIN</p>
+                                    <p onClick={(e) => switchTabs(e, "register")}>REGISTER</p>
+                                </div>
+                                <button ref={switcherTab}></button>
+                            </div>
+                            <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
+                                <div className="loginEmail">
+                                    < AiTwotoneMail />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        required
+                                        value={loginEmail}
+                                        onChange={(e) => setLoginEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className="loginPassword">
+                                    <AiFillUnlock />
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        required
+                                        value={loginPassword}
+                                        onChange={(e) => setLoginPassword(e.target.value)}
+                                    />
+                                </div>
+                                <Link to="/password/forgot">Forget Password ?</Link>
+                                <input type="submit" value="Login" className="loginBtn" />
+                            </form>
+                            <form className="signUpForm" ref={registerTab} encType='multipar/form-data' onSubmit={registerSubmit}>
+                                <div id="registerImage" className="registerImage">
+                                    <img src={avatarPreview} alt="Avatar Preview" />
+                                    <input
+                                        type="file"
+                                        name="avatar"
+                                        accept="image/*"
+                                        onChange={registerDataChange}
+                                    />
+                                </div>
+                                <div className="signUpName">
+                                    < MdDriveFileRenameOutline />
+                                    <input
+                                        type="text"
+                                        placeholder="Name"
+                                        required
+                                        name='name'
+                                        value={name}
+                                        onChange={registerDataChange}
+                                    />
+                                </div>
+                                <div className="signUpEmail">
+                                    < AiTwotoneMail />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        required
+                                        name="email"
+                                        value={email}
+                                        onChange={registerDataChange}
+                                    />
+                                </div>
+                                <div className="signUpPassword">
+                                    <AiFillUnlock />
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        required
+                                        name="password"
+                                        value={password}
+                                        onChange={registerDataChange}
+                                    />
+                                </div>
+                                <input
+                                    type="submit"
+                                    value="Register"
+                                    className="signUpBtn"
+                                // disabled= {loading ? true : false}
+                                />
+                            </form>
 
-                </div>
-            </div>
+                        </div>
+                    </div>
+                </Fragment>
+            )}
         </Fragment>
     );
 }
