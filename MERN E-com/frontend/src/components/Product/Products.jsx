@@ -8,6 +8,7 @@ import { useAlert } from 'react-alert'
 import { useParams } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
 import Slider from "r-range-slider";
+import MetaData from '../layout/MetaData'
 
 const categories = [
   'Electronics',
@@ -61,8 +62,8 @@ const Products = () => {
       // dispatch(getProducts(  price, category)); 
       setSearchButtonClicked(false);
     }
-    dispatch(getProducts(keyword, currentPage, price, category)); 
-  }, [dispatch, alert, error, currentPage, keyword, price, category, searchButtonClicked]); 
+    dispatch(getProducts(keyword, currentPage, price, category));
+  }, [dispatch, alert, error, currentPage, keyword, price, category, searchButtonClicked]);
 
   // useEffect(() => {
   //   if (searchButtonClicked) {
@@ -77,6 +78,7 @@ const Products = () => {
         <Loader />
       ) : (
         <Fragment>
+          <MetaData title={'see Best Products'} />
           <h2 className='productsHeading'>Products</h2>
 
           <div className="filterBox">

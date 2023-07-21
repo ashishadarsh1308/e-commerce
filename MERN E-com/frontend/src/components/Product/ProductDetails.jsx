@@ -8,6 +8,7 @@ import './ProductDetails.css'
 import ReactStarts from 'react-rating-stars-component'
 import ReviewCard from "./ReviewCard.js";
 import Loader from '../layout/Loader/Loader'
+import MetaData from '../layout/MetaData'
 
 const ProductDetails = () => {
     const { id } = useParams()
@@ -36,7 +37,8 @@ const ProductDetails = () => {
     return (
         <Fragment>
             {loading ? (<Loader />) : (
-                <Fragment Fragment >
+                <Fragment  >
+                    <MetaData title={product.name} />
                     <div className="ProductDetails">
                         <div>
 
