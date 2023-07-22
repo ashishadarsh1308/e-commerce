@@ -31,7 +31,7 @@ const Profile = () => {
                             <Link to="/me/update">Edit Profile</Link>
                         </div>
                         <div className='rightContainer'>
-                           
+
                             <div className='userDetailContainer'>
                                 <h4>Full Name</h4>
                                 <p className='para'>{user && user.name}</p>
@@ -42,7 +42,7 @@ const Profile = () => {
                             </div>
                             <div className='userDetailContainer'>
                                 <h4>Joined On</h4>
-                                <p className='para'>{user && String(user.createdAt)}</p>
+                                <p className='para'>{user && String(user.createdAt).substring(0, 10)}</p>
                             </div>
                             <div>
                                 <Link to="/orders">My Orders</Link>

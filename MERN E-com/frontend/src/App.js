@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
 import ProductDetails from './components/Product/ProductDetails.jsx';
 import Header from './components/layout/Header/Header';
@@ -10,6 +10,7 @@ import Products from './components/Product/Products';
 import Search from './components/Product/Search.jsx';
 import LoginSignup from './components/User/LoginSignup';
 import Profile from './components/User/Profile.jsx';
+import UpdateProfile from './components/User/UpdateProfile.jsx';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions.jsx';
@@ -40,7 +41,16 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path='/search' element={<Search />} />
-        <Route exact path='/account' element={<Profile />} />
+        <Route
+          exact
+          path="/account"
+          element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+        />
+        <Route
+          exact
+          path="/me/update"
+          element={isAuthenticated ? <UpdateProfile /> : <Navigate to="/login" />}
+        />
         <Route exact path='/login' element={<LoginSignup />} />
       </Routes>
       <Footer />

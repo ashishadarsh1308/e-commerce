@@ -43,7 +43,7 @@ const LoginSignup = () => {
             dispatch(clearErrors())
         }
         if (isAuthenticated) {
-            alert.success("Login Successful")
+            // alert.success("Login Successful")
             navigate('/account')
         }
     }, [dispatch, alert, error, isAuthenticated, navigate])
@@ -79,7 +79,7 @@ const LoginSignup = () => {
         // myForm.append('password', password)
         // myForm.append('avatar', avatar)
         // dispatch(register(myForm))
-        dispatch(register({ name, email, password, avatar}))
+        dispatch(register({ name, email, password, avatar }))
 
     }
 
