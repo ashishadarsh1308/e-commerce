@@ -73,13 +73,14 @@ const LoginSignup = () => {
     const registerSubmit = (e) => {
         e.preventDefault()
 
-        const myForm = new FormData()
+        // const myForm = new FormData()
+        // myForm.append('name', name)
+        // myForm.append('email', email)
+        // myForm.append('password', password)
+        // myForm.append('avatar', avatar)
+        // dispatch(register(myForm))
+        dispatch(register({ name, email, password, avatar}))
 
-        myForm.append('name', name)
-        myForm.append('email', email)
-        myForm.append('password', password)
-        myForm.append('avatar', avatar)
-        dispatch(register(myForm))
     }
 
     const registerDataChange = (e) => {
