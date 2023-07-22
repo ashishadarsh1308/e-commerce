@@ -2,10 +2,27 @@ const User = require('../models/userModel');
 const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2;
 
 //& Register user ----------------------------------------------------------------------------------------------------------
 exports.registerUser = async (req, res) => {
+    let myCloud; // Declare myCloud variable outside the try-catch block
     try {
+
+        if (req.body.avatar) {
+            myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+                folder: 'avatars',
+                width: 150,
+                crop: 'scale'
+            });
+        } else {
+            // Set default values for the avatar if not provided
+            myCloud = {
+                public_id: "No image selected",
+                secure_url: "No image selected"
+            };
+        }
+
         const { name, email, password } = req.body;
 
         const userExists = await User.findOne({ email });
@@ -22,13 +39,12 @@ exports.registerUser = async (req, res) => {
             email,
             password,
             avatar: {
-                public_id: 'this is a sample id',
-                url: 'profilepic.jpg'
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
             }
         });
 
         sendToken(user, 201, res);
-
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
             return res.status(400).json({
