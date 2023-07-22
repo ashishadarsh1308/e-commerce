@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import './updateProfile.css'
 import MetaData from '../layout/MetaData';

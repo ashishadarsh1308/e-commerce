@@ -11,6 +11,7 @@ import Search from './components/Product/Search.jsx';
 import LoginSignup from './components/User/LoginSignup';
 import Profile from './components/User/Profile.jsx';
 import UpdateProfile from './components/User/UpdateProfile.jsx';
+import UpdatePassword from './components/User/UpdatePassword.jsx';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions.jsx';
@@ -45,6 +46,11 @@ function App() {
           exact
           path="/account"
           element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+        />
+        <Route
+          exact
+          path="/password/update"
+          element={isAuthenticated ? <UpdatePassword /> : <Navigate to="/login" />}
         />
         <Route
           exact

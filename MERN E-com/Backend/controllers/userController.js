@@ -288,7 +288,22 @@ exports.updateProfile = async (req, res) => {
             email: req.body.email,
         };
 
-        // Update avatar: TODO
+        if (req.body.avatar) {
+            const user = await User.findById(req.user.id);
+            const image_id = user.avatar.public_id;
+            const res = await cloudinary.uploader.destroy(image_id);
+            const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+                folder: 'avatars',
+                width: 150,
+                crop: 'scale'
+            });
+
+            userData.avatar = {
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
+            }
+        }
+
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
