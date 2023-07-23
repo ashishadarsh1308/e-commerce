@@ -77,7 +77,7 @@ const Shipping = () => {
                         <div>
                             <BsFillPinMapFill />
                             <input
-                                type="number"
+                                type="text"
                                 placeholder="Postal Code"
                                 required
                                 value={postalCode}
