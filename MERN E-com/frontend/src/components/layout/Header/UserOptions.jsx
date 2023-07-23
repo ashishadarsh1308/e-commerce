@@ -40,7 +40,7 @@ const UserOptions = ({ user }) => {
     };
 
     const handleCart = () => {
-        navigate("/cart");
+        navigate("/Cart");
     };
 
     const actions = [

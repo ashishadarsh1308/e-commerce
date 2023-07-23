@@ -10,8 +10,9 @@ import Products from './components/Product/Products';
 import Search from './components/Product/Search.jsx';
 import LoginSignup from './components/User/LoginSignup';
 import Profile from './components/User/Profile.jsx';
-import UpdateProfile from './components/User/UpdateProfile.jsx';
-import UpdatePassword from './components/User/UpdatePassword.jsx';
+import UpdateProfile from './components/User/UpdateProfile';
+import UpdatePassword from './components/User/UpdatePassword';
+import Cart from './components/Cart/Cart';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions.jsx';
@@ -56,6 +57,11 @@ function App() {
           exact
           path="/me/update"
           element={isAuthenticated ? <UpdateProfile /> : <Navigate to="/login" />}
+        />
+        <Route
+          exact
+          path="/Cart"
+          element={isAuthenticated ? <Cart/> : <Navigate to="/login" />}
         />
         <Route exact path='/login' element={<LoginSignup />} />
       </Routes>
