@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { getProductDetails } from '../../actions/productAction'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAlert } from 'react-alert'
 import { addToCart } from '../../actions/cartAction'
@@ -14,9 +14,13 @@ const ProductDetails = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
 
+    const navigate = useNavigate()
+
     const { product, loading, error } = useSelector(
         state => state.productDetails
     )
+
+    const { isAuthenticated } = useSelector((state) => state.user);
 
     const [quantity, setQuantity] = useState(1);
     const increaseQuantity = () => {
@@ -34,6 +38,12 @@ const ProductDetails = () => {
     const alert = useAlert()
 
     const addToCartHandler = () => {
+
+        if (!isAuthenticated) {
+            // alert.error('Please login first to access the product');
+            navigate('/login');
+            return;
+        }
         dispatch(addToCart(id, quantity))
         alert.success('Item Added to Cart')
     }

@@ -12,7 +12,9 @@ import LoginSignup from './components/User/LoginSignup';
 import Profile from './components/User/Profile.jsx';
 import UpdateProfile from './components/User/UpdateProfile';
 import UpdatePassword from './components/User/UpdatePassword';
+import Shipping from './components/Cart/Shipping';
 import Cart from './components/Cart/Cart';
+import ConfirmOrder from './components/Cart/ConfirmOrder.jsx';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions.jsx';
@@ -61,7 +63,17 @@ function App() {
         <Route
           exact
           path="/Cart"
-          element={isAuthenticated ? <Cart/> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Cart /> : <Navigate to="/login" />}
+        />
+        <Route
+          exact
+          path="/shipping"
+          element={isAuthenticated ? <Shipping /> : <Navigate to="/login" />}
+        />
+        <Route
+          exact
+          path="/order/confirm"
+          element={isAuthenticated ? <ConfirmOrder /> : <Navigate to="/login" />}
         />
         <Route exact path='/login' element={<LoginSignup />} />
       </Routes>

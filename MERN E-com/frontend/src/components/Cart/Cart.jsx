@@ -3,8 +3,12 @@ import './Cart.css'
 import CartItemCard from './CartItemCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeCartItem } from '../../actions/cartAction'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Cart = () => {
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -26,12 +30,17 @@ const Cart = () => {
         dispatch(addToCart(id, newQty));
     };
 
+    const chechOutHandler = () => {
+        navigate('/shipping');
+    }
+
     return (
         <Fragment>
             {cartItems.length === 0 ? (
                 <div className='emptyCart'>
-                    <img src="/images/200.gif" alt="Loading animation" />
+                    <img className='emptyCartImg' src="/images/200.gif" alt="Loading animation" />
                     <p className='paraEmpty'> oops! your cart is empty </p>
+                    <Link to='/'>Go Back to home</Link>
                 </div>
             ) : (
                 <Fragment>
@@ -64,11 +73,12 @@ const Cart = () => {
                             <div></div>
                             <div className="cartGrossProfitBox">
                                 <p>Gross Total</p>
-                                <p>{`₹${600}`}</p>
+                                <p>{`₹${cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0)
+                                    }`}</p>
                             </div>
                             <div></div>
                             <div className="checkOutBtn">
-                                <button >Check Out</button>
+                                <button onClick={chechOutHandler} >Check Out</button>
                             </div>
                         </div>
                     </div>

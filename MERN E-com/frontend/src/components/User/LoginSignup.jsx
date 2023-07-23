@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import './LoginSignup.css'
 import { AiFillUnlock, AiTwotoneMail } from 'react-icons/ai'
@@ -10,6 +10,8 @@ import { useAlert } from 'react-alert'
 import Loader from '../layout/Loader/Loader'
 
 const LoginSignup = () => {
+
+    const location = useLocation()
 
     const dispatch = useDispatch()
     const alert = useAlert()
@@ -37,6 +39,8 @@ const LoginSignup = () => {
     const [avatar, setAvatar] = useState("/images/Profile.png");
     const [avatarPreview, setAvatarPreview] = useState("/images/Profile.png");
 
+    const redirec = location.search ? location.search.split('=')[1] : '/account'
+
     useEffect(() => {
         if (error) {
             alert.error(error)
@@ -44,9 +48,9 @@ const LoginSignup = () => {
         }
         if (isAuthenticated) {
             // alert.success("Login Successful")
-            navigate('/account')
+            navigate(redirec)
         }
-    }, [dispatch, alert, error, isAuthenticated, navigate])
+    }, [dispatch, alert, error, isAuthenticated, navigate, redirec])
 
     const switchTabs = (e, tab) => {
         if (tab === "login") {
