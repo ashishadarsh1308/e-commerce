@@ -18,8 +18,9 @@
 
 .CartItemCard>div>a {
     font: 300 1.5vmax cursive;
-    color: rgba(24, 24, 24, 0.815);
+    color: rgba(24, 24, 24, 0.615);
     text-decoration: none;
+    padding-bottom: 3px;
 }
 
 .CartItemCard>div>span {
