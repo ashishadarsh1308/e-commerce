@@ -16,6 +16,7 @@ import axios from 'axios'
 import { AiFillCreditCard, AiOutlineCalendar } from 'react-icons/ai'
 import { BsFillKeyFill } from 'react-icons/bs'
 import { clearErrors, createOrder } from '../../actions/orderAction'
+import { clearCart } from '../../actions/cartAction'
 
 const Payment = () => {
 
@@ -98,7 +99,7 @@ const Payment = () => {
 
                     dispatch(createOrder(order));
 
-                    // dispatch(clearCart());
+                    dispatch(clearCart());
 
                     navigate('/success')
                 } else {
