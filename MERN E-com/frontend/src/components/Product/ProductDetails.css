@@ -89,7 +89,7 @@
     color: rgba(0, 0, 0, 0.74);
     background-color: rgba(0, 0, 0, 0.082);
     margin: 0 0.4vmax;
-    border-radius:10px;
+    border-radius: 10px;
 }
 
 .detailsBlock-3-1>button:last-child {
@@ -103,6 +103,16 @@
     padding: 1.0vmax 2vmax;
     margin: 1vmax;
     outline: none;
+}
+
+.detailsBlock-3-1>button[disabled] {
+    background-color: rgba(0, 0, 0, 0.082);
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.534);
+}
+
+.detailsBlock-3-1>button[disabled]:hover {
+    background-color: rgba(0, 0, 0, 0.082);
 }
 
 .detailsBlock-3-1>button:last-child:hover {

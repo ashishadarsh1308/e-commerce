@@ -17,7 +17,8 @@ import Cart from './components/Cart/Cart';
 import ConfirmOrder from './components/Cart/ConfirmOrder';
 import Payment from './components/Cart/Payment';
 import OrderSuccess from './components/Cart/OrderSuccess';
-import MyOrders from './components/Order/MyOrders.jsx';
+import MyOrders from './components/Order/MyOrders';
+import OrderDetails from './components/Order/OrderDetails';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions';
@@ -105,6 +106,12 @@ function App() {
             path='/orders'
             element={isAuthenticated ? <MyOrders /> : <Navigate to="/login" />}
           />
+          <Route
+            exact
+            path='/order/:id'
+            element={isAuthenticated ? <OrderDetails /> : <Navigate to="/login" />}
+          />
+
           <Route exact path='/login' element={<LoginSignup />} />
         </Routes>
       </Elements>
