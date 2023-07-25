@@ -47,7 +47,11 @@ const ConfirmOrder = () => {
             totalPrice,
         };
 
-        sessionStorage.setItem("orderInfo", JSON.stringify(data));
+        console.log(data);
+
+        sessionStorage.removeItem('orderInfo');
+
+        sessionStorage.setItem('orderInfo', JSON.stringify(data));
 
         navigate("/process/payment");
     };

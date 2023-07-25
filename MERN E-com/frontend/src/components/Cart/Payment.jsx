@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import './Payment.css'
 import CheckoutSteps from './CheckoutSteps'
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { AiFillCreditCard, AiOutlineCalendar } from 'react-icons/ai'
 import { BsFillKeyFill } from 'react-icons/bs'
+import { clearErrors, createOrder } from '../../actions/orderAction'
 
 const Payment = () => {
 
@@ -27,6 +28,7 @@ const Payment = () => {
 
     const { cartItems, shippingInfo } = useSelector(state => state.cart)
     const { user } = useSelector(state => state.user)
+    const { error } = useSelector(state => state.newOrder)
 
     const payBtn = useRef(null)
 
@@ -34,9 +36,20 @@ const Payment = () => {
         amount: Math.round(orderInfo.totalPrice * 100)
     }
 
-    const submitHandler = async (e) => {
+    const order = {
+        orderItems: cartItems,
+        shippingInfo,
+        itemsPrice: orderInfo.subtotal,
+        taxPrice: orderInfo.tax,
+        shippingPrice: orderInfo.shippingCharges,
+        totalPrice: orderInfo.totalPrice,
+    }
 
+    // console.log(order)
+
+    const submitHandler = async (e) => {
         e.preventDefault()
+
         payBtn.current.disabled = true
 
         try {
@@ -78,12 +91,14 @@ const Payment = () => {
                 // The payment is processed or not
                 if (result.paymentIntent.status === 'succeeded') {
 
-                    // const paymentData = {
-                    //     id: result.paymentIntent.id,
-                    //     status: result.paymentIntent.status
-                    // }
+                    order.paymentInfo = {
+                        id: result.paymentIntent.id,
+                        status: result.paymentIntent.status
+                    }
 
-                    // dispatch(createOrder(paymentData))
+                    dispatch(createOrder(order));
+
+                    // dispatch(clearCart());
 
                     navigate('/success')
                 } else {
@@ -98,32 +113,37 @@ const Payment = () => {
         }
     }
 
+    useEffect(() => {
+        if (error) {
+            alert.error(error)
+            dispatch(clearErrors())
+        }
+    }, [dispatch, alert, error])
+
+
     return (
         <Fragment>
-            <MetaData title='Payment' />
+            <MetaData title="Payment" />
             <CheckoutSteps activeStep={2} />
-            <div className="PaymentContainer">
-                <form
-                    className="PaymentForm"
-                    onSubmit={(e) => submitHandler(e)}
-                >
+            <div className="paymentContainer">
+                <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
                     <h1>Card Info</h1>
                     <div>
                         <AiFillCreditCard />
-                        <CardNumberElement className='paymentInput' />
+                        <CardNumberElement className="paymentInput" />
                     </div>
                     <div>
                         <AiOutlineCalendar />
-                        <CardExpiryElement className='paymentInput' />
+                        <CardExpiryElement className="paymentInput" />
                     </div>
                     <div>
                         <BsFillKeyFill />
-                        <CardCvcElement className='paymentInput' />
+                        <CardCvcElement className="paymentInput" />
                     </div>
 
                     <input
                         type="submit"
-                        value={`pay - ${orderInfo && orderInfo.totalPrice}`}
+                        value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
                         ref={payBtn}
                         className="paymentFormBtn"
                     />
@@ -134,3 +154,4 @@ const Payment = () => {
 }
 
 export default Payment
+

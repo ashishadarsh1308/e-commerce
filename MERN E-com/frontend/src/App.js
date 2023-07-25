@@ -15,10 +15,11 @@ import UpdatePassword from './components/User/UpdatePassword';
 import Shipping from './components/Cart/Shipping';
 import Cart from './components/Cart/Cart';
 import ConfirmOrder from './components/Cart/ConfirmOrder';
-import Payment from './components/Cart/Payment.jsx';
+import Payment from './components/Cart/Payment';
+import OrderSuccess from './components/Cart/OrderSuccess';
 import store from './store';
 import { loadUser } from './actions/userAction';
-import UserOptions from './components/layout/Header/UserOptions.jsx';
+import UserOptions from './components/layout/Header/UserOptions';
 import { useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -92,6 +93,11 @@ function App() {
             exact
             path='/process/payment'
             element={isAuthenticated ? <Payment /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='/success'
+            element={isAuthenticated ? <OrderSuccess /> : <Navigate to="/login" />}
           />
           <Route exact path='/login' element={<LoginSignup />} />
         </Routes>
