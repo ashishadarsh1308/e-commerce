@@ -33,12 +33,31 @@ exports.getAllProducts = async (req, res) => {
             .search()
             .filter()
             .pagination(resultPerPage);
-            
+
         const products = await apiFeature.query;
         res.status(200).json({
             success: true,
             resultPerPage,
             productsCount,
+            products
+        });
+    } catch (error) {
+        // Handle any potential errors
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred',
+            error: error.message,
+        });
+    }
+};
+
+//! Get all products (Admin) => /api/v1/admin/products
+exports.getAdminProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+
+        res.status(200).json({
+            success: true,
             products
         });
     } catch (error) {

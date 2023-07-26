@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from './Sidebar.jsx';
 import './Dashboard.css';
 import { Link } from 'react-router-dom';
 import ReactApexCharts from 'react-apexcharts';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAdminProducts } from '../../actions/productAction.js';
 
 const Dashboard = () => {
+
+    let outOfStock = 0;
+    const dispatch = useDispatch();
+
+    const { products } = useSelector((state) => state.products);
+
+    products && products.forEach((product) => {
+        if (product.stock === 0) {
+            outOfStock += 1;
+        }
+    });
+
+    useEffect(() => {
+        dispatch(getAdminProducts());
+    }, [dispatch]);
+
     const lineState = {
         options: {
             chart: {
@@ -28,10 +46,10 @@ const Dashboard = () => {
 
     const donutChartData = {
         options: {
-            labels: ['Out of Stock', 'In Stock'],
+            labels: ['outOfStock', 'In Stock'],
             colors: ['#f23d56', '#00A6B4'],
         },
-        series: [75, 235],
+        series: [outOfStock, products && products.length - outOfStock],
     };
 
     return (
@@ -48,8 +66,7 @@ const Dashboard = () => {
                     <div className='dashboardSummaryBox2'>
                         <Link to='/admin/products'>
                             <p>Product</p>
-                            <p>2343</p>
-                            {/* <p>{products && products.length}</p> */}
+                            <p>{products && products.length}</p>
                         </Link>
                         <Link to='/admin/orders'>
                             <p>Orders</p>

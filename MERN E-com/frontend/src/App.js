@@ -5,6 +5,7 @@ import WebFont from 'webfontloader';
 import ProductDetails from './components/Product/ProductDetails.jsx';
 import Header from './components/layout/Header/Header';
 import Footer from './components/layout/Footer/Footer';
+import UserOptions from './components/layout/Header/UserOptions';
 import Home from './components/Home/Home.jsx';
 import Products from './components/Product/Products';
 import Search from './components/Product/Search.jsx';
@@ -19,10 +20,10 @@ import Payment from './components/Cart/Payment';
 import OrderSuccess from './components/Cart/OrderSuccess';
 import MyOrders from './components/Order/MyOrders';
 import OrderDetails from './components/Order/OrderDetails';
-import Dashboard from './components/Admin/Dashboard.jsx';
+import Dashboard from './components/Admin/Dashboard';
+import ProductList from './components/Admin/ProductList';
 import store from './store';
 import { loadUser } from './actions/userAction';
-import UserOptions from './components/layout/Header/UserOptions';
 import { useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -117,6 +118,11 @@ function App() {
             exact
             path='/admin/dashboard'
             element={isAuthenticated && user.role === 'admin' ? <Dashboard /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='/admin/products'
+            element={isAuthenticated && user.role === 'admin' ? <ProductList /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />
