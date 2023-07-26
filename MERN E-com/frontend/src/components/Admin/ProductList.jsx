@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import Sidebar from './Sidebar.jsx';
 import './ProductList.css';
-import { Link, useParams } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAdminProducts, clearErrors } from '../../actions/productAction.js';
 import { useAlert } from 'react-alert';
@@ -67,7 +67,7 @@ const ProductList = () => {
                                 <tr key={product._id}>
                                     <td>{product._id}</td>
                                     <td>{product.name}</td>
-                                    <td>${product.price}</td>
+                                    <td>₹{product.price}</td>
                                     <td style={{ color: product.stock === 0 ? "red" : "green" }}>
                                         {product.stock}
                                     </td>

@@ -22,6 +22,7 @@ import MyOrders from './components/Order/MyOrders';
 import OrderDetails from './components/Order/OrderDetails';
 import Dashboard from './components/Admin/Dashboard';
 import ProductList from './components/Admin/ProductList';
+import UpdateProduct from './components/Admin/UpdateProduct.jsx';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import { useSelector } from 'react-redux';
@@ -129,6 +130,11 @@ function App() {
             exact
             path='/admin/product'
             element={isAuthenticated && user.role === 'admin' ? <NewProduct /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='/admin/product/:id'
+            element={isAuthenticated && user.role === 'admin' ? <UpdateProduct /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />
