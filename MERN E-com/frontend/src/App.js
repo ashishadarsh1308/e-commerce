@@ -19,6 +19,7 @@ import Payment from './components/Cart/Payment';
 import OrderSuccess from './components/Cart/OrderSuccess';
 import MyOrders from './components/Order/MyOrders';
 import OrderDetails from './components/Order/OrderDetails';
+import Dashboard from './components/Admin/Dashboard.jsx';
 import store from './store';
 import { loadUser } from './actions/userAction';
 import UserOptions from './components/layout/Header/UserOptions';
@@ -110,6 +111,12 @@ function App() {
             exact
             path='/order/:id'
             element={isAuthenticated ? <OrderDetails /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            exact
+            path='/admin/dashboard'
+            element={isAuthenticated && user.role === 'admin' ? <Dashboard /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />
