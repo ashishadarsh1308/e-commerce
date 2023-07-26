@@ -188,10 +188,9 @@
 
 .reviewCard {
     flex: none;
-
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.226);
     border: 1px solid rgba(56, 56, 56, 0.116);
-    width: 30vmax;
+    width: 20vmax;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -201,16 +200,20 @@
 
 .reviewCard>img {
     width: 5vmax;
+    height: 5vmax;
+    border-radius: 50%;
 }
 
 .reviewCard>p {
     color: rgba(0, 0, 0, 0.836);
     font: 600 0.9vmax "Roboto";
+    margin: 1vmax 0;
 }
 
 .reviewCardComment {
-    color: rgba(0, 0, 0, 0.445);
+    color: rgba(0, 0, 0, 0.845);
     font: 300 0.8vmax cursive;
+    margin: 1vmax 0 0 0;
 }
 
 .noReviews {

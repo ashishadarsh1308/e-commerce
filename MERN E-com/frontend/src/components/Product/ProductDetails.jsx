@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { getProductDetails } from '../../actions/productAction'
+import { getProductDetails, newReview } from '../../actions/productAction'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAlert } from 'react-alert'
@@ -9,8 +9,24 @@ import ReactStarts from 'react-rating-stars-component'
 import ReviewCard from "./ReviewCard.js";
 import Loader from '../layout/Loader/Loader'
 import MetaData from '../layout/MetaData'
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+import { NEW_REVIEW_RESET } from '../../constants/productConstants'
+
 
 const ProductDetails = () => {
+
+    const [quantity, setQuantity] = useState(1);
+    const [open, setOpen] = React.useState(false);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+
     const { id } = useParams()
     const dispatch = useDispatch()
 
@@ -20,9 +36,10 @@ const ProductDetails = () => {
         state => state.productDetails
     )
 
+    const { success, error: reviewError } = useSelector(state => state.newReview)
+
     const { isAuthenticated } = useSelector((state) => state.user);
 
-    const [quantity, setQuantity] = useState(1);
     const increaseQuantity = () => {
         if (product.stock <= quantity) return;
         const qty = quantity + 1;
@@ -48,14 +65,32 @@ const ProductDetails = () => {
         alert.success('Item Added to Cart')
     }
 
+    console.log(rating, comment)
+
+    const reviewSubmitHandler = () => {
+        dispatch(newReview({
+            productId: id,
+            comment: comment,
+            rating: rating
+        }));
+    };
+
     useEffect(() => {
         if (error) {
             alert.error(error)
         }
+        if (reviewError) {
+            alert.error(reviewError)
+        }
+        if (success) {
+            alert.success('Review posted successfully')
+            dispatch({ type: NEW_REVIEW_RESET })
+            setOpen(false)
+        }
         if (id && id !== '') {
             dispatch(getProductDetails(id));
         }
-    }, [dispatch, id, error, alert]);
+    }, [dispatch, id, error, alert, reviewError, success]);
 
     const options = {
         value: product.ratings,
@@ -66,6 +101,14 @@ const ProductDetails = () => {
         precision: 0.5,
         size: window.innerWidth < 768 ? 20 : 25
     }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Fragment>
@@ -123,10 +166,56 @@ const ProductDetails = () => {
                             <div className="detailsBlock-4">
                                 Description: <p>{product.description}</p>
                             </div>
-                            <button className="submitReview">Submit Review</button>
+                            <button
+                                className="submitReview"
+                                variant="outlined"
+                                onClick={handleClickOpen}
+                            >
+                                Write a review
+                            </button>
+                            <Dialog
+                                open={open} onClose={handleClose}
+                            >
+                                <DialogTitle>Write a review</DialogTitle>
+                                <DialogContent>
+                                    <Box
+                                        sx={{
+                                            '& > legend': { mt: 2 },
+                                        }}
+                                    >
+                                        <Typography component="legend">Controlled</Typography>
+                                        <Rating
+                                            name="simple-controlled"
+                                            value={rating}
+                                            onChange={(e) => {
+                                                setRating(e.target.value);
+                                            }}
+                                        />
+                                    </Box>
+                                    <textarea
+                                        className="reviewTextArea"
+                                        placeholder="Enter your review"
+                                        rows="5"
+                                        cols="30"
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button autoFocus color='secondary' onClick={handleClose}>
+                                        CANCEL
+                                    </Button>
+                                    <Button
+                                        autoFocus
+                                        color='primary'
+                                        onClick={reviewSubmitHandler}
+                                    >
+                                        SUBMIT
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                     </div>
-
                     <h3 className="reviewsHeading">REVIEWS</h3>
 
                     {product.reviews && product.reviews[0] ? (

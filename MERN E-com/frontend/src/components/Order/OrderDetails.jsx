@@ -54,7 +54,7 @@ const OrderDetails = () => {
                                     <p>Address:</p>
                                     <span>
                                         {order.shippingInfo &&
-                                            `${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.pinCode}, ${order.shippingInfo.country}`}
+                                            `${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.postalCode}, ${order.shippingInfo.country}`}
                                     </span>
                                 </div>
                             </div>

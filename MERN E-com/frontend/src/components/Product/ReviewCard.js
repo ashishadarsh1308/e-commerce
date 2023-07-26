@@ -1,5 +1,6 @@
 import ReactStarts from 'react-rating-stars-component'
 import React from "react";
+import { useSelector } from 'react-redux';
 // import profilePng from "../../images/Profile.png";
 
 const ReviewCard = ({ review }) => {
@@ -13,9 +14,12 @@ const ReviewCard = ({ review }) => {
         size: window.innerWidth < 768 ? 20 : 30
     };
 
+    const { user } = useSelector((state) => state.user);
+
     return (
         <div className="reviewCard">
-            <img src='/images/Profile.png' alt="User" />
+            {user?.avatar && <img src={user.avatar.url} alt={user?.name || 'User'} />}
+            {/* //todo update image of specific user */}
             <p>{review.name}</p>
             <ReactStarts {...options} />
             <span className="reviewCardComment">{review.comment}</span>
