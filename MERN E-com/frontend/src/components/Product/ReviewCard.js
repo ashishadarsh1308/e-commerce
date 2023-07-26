@@ -19,7 +19,6 @@ const ReviewCard = ({ review }) => {
     return (
         <div className="reviewCard">
             {user?.avatar && <img src={user.avatar.url} alt={user?.name || 'User'} />}
-            {/* //todo update image of specific user */}
             <p>{review.name}</p>
             <ReactStarts {...options} />
             <span className="reviewCardComment">{review.comment}</span>

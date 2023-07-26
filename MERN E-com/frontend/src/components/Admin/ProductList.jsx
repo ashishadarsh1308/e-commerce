@@ -68,7 +68,9 @@ const ProductList = () => {
                                     <td>{product._id}</td>
                                     <td>{product.name}</td>
                                     <td>${product.price}</td>
-                                    <td>{product.stock}</td>
+                                    <td style={{ color: product.stock === 0 ? "red" : "green" }}>
+                                        {product.stock}
+                                    </td>
                                     <td>
                                         <Link to={`/admin/product/${product._id}`}><i style={{ color: 'blueviolet' }}><BsPencilSquare /></i></Link>
                                     </td>

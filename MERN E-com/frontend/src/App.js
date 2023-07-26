@@ -28,6 +28,7 @@ import { useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import axios from 'axios';
+import NewProduct from './components/Admin/NewProduct';
 
 
 function App() {
@@ -123,6 +124,11 @@ function App() {
             exact
             path='/admin/products'
             element={isAuthenticated && user.role === 'admin' ? <ProductList /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='/admin/product'
+            element={isAuthenticated && user.role === 'admin' ? <NewProduct /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />

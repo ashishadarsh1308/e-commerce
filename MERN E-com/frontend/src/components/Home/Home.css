@@ -114,6 +114,12 @@
     font-size: 1vmax;
 }
 
+.productImgCard {
+    width: 14vmax;
+    height: 12vmax;
+    object-fit: cover;
+}
+
 .productCard:hover {
     box-shadow: 0 0 5px rgba(15, 15, 15, 0.26);
 

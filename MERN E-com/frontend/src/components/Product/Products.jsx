@@ -12,19 +12,18 @@ import MetaData from '../layout/MetaData'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 const categories = [
-  'Electronics',
-  'Cameras',
-  'Laptop',
-  'Accessories',
-  'Headphones',
-  'Food',
+  "Electronics",
+  "Cameras",
+  "Laptop",
+  "Accessories",
+  "Headphones",
+  "Food",
   "Books",
-  'Clothes/Shoes',
-  'Beauty/Health',
-  'Sports',
-  'Outdoor',
-  'Home',
-  'Mobile'
+  "Clothes/Shoes",
+  "Beauty/Health",
+  "Sports",
+  "Outdoor",
+  "Home",
 ]
 
 const Products = () => {
@@ -100,7 +99,7 @@ const Products = () => {
                 }
               }}
             />
-            <button className='pricebutton' onClick={handleSearch}> <AiOutlineSearch/> </button>
+            <button className='pricebutton' onClick={handleSearch}> <AiOutlineSearch /> </button>
 
             <ul className='categoryBox'>
               <p className='categoryP'>Categories</p>

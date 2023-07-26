@@ -13,6 +13,10 @@ import {
     NEW_REVIEW_REQUEST,
     NEW_REVIEW_SUCCESS,
     NEW_REVIEW_FAIL,
+    NEW_PRODUCT_REQUEST,
+    NEW_PRODUCT_SUCCESS,
+    NEW_PRODUCT_RESET,
+    NEW_PRODUCT_FAIL,
 } from '../constants/productConstants';
 
 //* get user all products => /api/v1/admin/products
@@ -42,6 +46,32 @@ export const getProducts = (keyword = '', currentPage = 1, price = [0, 50000], c
         })
     }
 }
+
+export const createProduct = (productData) => async (dispatch) => {
+    try {
+        dispatch({ type: NEW_PRODUCT_REQUEST });
+
+        const config = {
+            headers: { "Content-Type": "application/json" },
+        };
+
+        const { data } = await axios.post(
+            `/api/v1/admin/product/new`,
+            productData,
+            config
+        );
+
+        dispatch({
+            type: NEW_PRODUCT_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: NEW_PRODUCT_FAIL,
+            payload: error.response.data.message,
+        });
+    }
+};
 
 //* get admin all products => /api/v1/admin/products
 export const getAdminProducts = () => async (dispatch) => {

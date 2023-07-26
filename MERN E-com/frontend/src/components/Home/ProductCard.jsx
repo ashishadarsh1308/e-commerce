@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
 
     return (
         <Link className="productCard" to={`/product/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
-            <img src={product.images[0].url} alt={product.name} />
+            <img className='productImgCard' src={product.images[0].url} alt={product.name} />
             <p>{product.name}</p>
             <div>
                 <ReactStars {...options} />{" "}
