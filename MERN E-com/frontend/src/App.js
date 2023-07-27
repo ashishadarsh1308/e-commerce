@@ -30,7 +30,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import axios from 'axios';
 import NewProduct from './components/Admin/NewProduct';
-
+import OrderList from './components/Admin/OrderList';
 
 function App() {
 
@@ -135,6 +135,11 @@ function App() {
             exact
             path='/admin/product/:id'
             element={isAuthenticated && user.role === 'admin' ? <UpdateProduct /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='/admin/orders'
+            element={isAuthenticated && user.role === 'admin' ? <OrderList /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />

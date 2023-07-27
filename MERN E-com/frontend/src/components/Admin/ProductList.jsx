@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import Sidebar from './Sidebar.jsx';
 import './ProductList.css';
-import { Link,  } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAdminProducts, clearErrors } from '../../actions/productAction.js';
 import { useAlert } from 'react-alert';
@@ -35,7 +35,7 @@ const ProductList = () => {
     const handleDeleteProduct = async (productId) => {
         try {
             await axios.delete(`/api/v1/admin/product/${productId}`);
-            await dispatch(getAdminProducts());
+            dispatch(getAdminProducts());
             alert.success('Product deleted successfully');
         } catch (error) {
             alert.error('Error deleting product');

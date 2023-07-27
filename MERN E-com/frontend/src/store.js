@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { productsReducer, productDetailsReducer, newReviewReducer, newProductReducer, productReducer } from './reducers/ProductReducer';
 import { ProfileReducer, UserReducer } from "./reducers/UserReducer";
 import { cartReducer } from "./reducers/cartReducer";
-import { myOrdersReducer, newOrderReducer, orderDetailsReducer } from "./reducers/orderReducer";
+import { allOrdersReducer, myOrdersReducer, newOrderReducer, orderDetailsReducer, orderReducer } from "./reducers/orderReducer";
 
 const reducer = combineReducers({
     products: productsReducer,
@@ -18,6 +18,8 @@ const reducer = combineReducers({
     newReview: newReviewReducer,
     newProduct: newProductReducer,
     product: productReducer,
+    allOrders: allOrdersReducer,
+    order: orderReducer,
 })
 
 const initialState = {
@@ -27,9 +29,10 @@ const initialState = {
             : [],
         shippingInfo: localStorage.getItem('shippingInfo')
             ? JSON.parse(localStorage.getItem('shippingInfo'))
-            : {}
+            : {},
     }
-}
+};
+
 
 const middleware = [thunk]
 
