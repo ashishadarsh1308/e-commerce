@@ -95,9 +95,9 @@ const OrderDetails = () => {
                                         {order.orderStatus && order.orderStatus}
                                     </p>
                                 </div>
-                                <div>
-                                    <p>Delivered Date:</p>
-                                    {order.deliveredAt && (
+                                {order.orderStatus === "Delivered" && order.deliveredAt && (
+                                    <div>
+                                        <p>Delivered Date:</p>
                                         <span>
                                             {new Date(order.deliveredAt).toLocaleString("en-IN", {
                                                 timeZone: "Asia/Kolkata",
@@ -105,9 +105,8 @@ const OrderDetails = () => {
                                                 timeStyle: "short",
                                             })}
                                         </span>
-                                    )}
-                                </div>
-
+                                    </div>
+                                )}
                             </div>
                         </div>
 

@@ -10,6 +10,7 @@ import MetaData from '../layout/MetaData';
 import { MdDescription, MdOutlineCategory, MdProductionQuantityLimits } from 'react-icons/md';
 import { BsCurrencyRupee } from 'react-icons/bs';
 import { GrStorage } from 'react-icons/gr';
+import { AiOutlineLink } from 'react-icons/ai';
 
 const NewProduct = () => {
 
@@ -182,7 +183,7 @@ const NewProduct = () => {
                         </div> */}
 
                         <div>
-                            <GrStorage />
+                            <AiOutlineLink />
                             <input
                                 type="text"
                                 placeholder="img url"

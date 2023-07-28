@@ -137,17 +137,17 @@ const ProcessOrder = () => {
                                             >
                                                 {order.orderStatus && order.orderStatus} <br />
                                             </p>
-                                        </div>
-                                        <div>
-                                            <p>Delivered Date:</p>
-                                            {order.deliveredAt && (
-                                                <span>
-                                                    {new Date(order.deliveredAt).toLocaleString("en-IN", {
-                                                        timeZone: "Asia/Kolkata",
-                                                        dateStyle: "short",
-                                                        timeStyle: "short",
-                                                    })}
-                                                </span>
+                                            {order.orderStatus === "Delivered" && order.deliveredAt && (
+                                                <div>
+                                                    <p>Delivered Date:</p>
+                                                    <span>
+                                                        {new Date(order.deliveredAt).toLocaleString("en-IN", {
+                                                            timeZone: "Asia/Kolkata",
+                                                            dateStyle: "short",
+                                                            timeStyle: "short",
+                                                        })}
+                                                    </span>
+                                                </div>
                                             )}
                                         </div>
                                     </div>

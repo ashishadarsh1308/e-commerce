@@ -423,6 +423,10 @@ exports.deleteUser = async (req, res) => {
             });
         }
 
+        // Remove avatar from cloudinary
+        const image_id = user.avatar.public_id;
+        await cloudinary.uploader.destroy(image_id);
+
         res.status(200).json({
             success: true,
             message: 'User deleted successfully',

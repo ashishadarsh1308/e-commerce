@@ -24,14 +24,16 @@ import Dashboard from './components/Admin/Dashboard';
 import ProductList from './components/Admin/ProductList';
 import UpdateProduct from './components/Admin/UpdateProduct.jsx';
 import ProcessOrder from './components/Admin/ProcessOrder.jsx';
+import UserLists from './components/Admin/UserLists.jsx';
 import store from './store';
-import { loadUser } from './actions/userAction';
+import { getAllUsers, loadUser } from './actions/userAction';
 import { useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import axios from 'axios';
 import NewProduct from './components/Admin/NewProduct';
 import OrderList from './components/Admin/OrderList';
+import { getAllOrders } from './actions/orderAction';
 
 function App() {
 
@@ -52,6 +54,8 @@ function App() {
 
     store.dispatch(loadUser());
     getStripeApiKey();
+    getAllOrders();
+    getAllUsers();
   }, []);
 
   return (
@@ -146,6 +150,11 @@ function App() {
             exact
             path='/admin/order/:id'
             element={isAuthenticated && user.role === 'admin' ? <ProcessOrder /> : <Navigate to="/login" />}
+          />
+          <Route
+            exact
+            path='admin/users'
+            element={isAuthenticated && user.role === 'admin' ? <UserLists /> : <Navigate to="/login" />}
           />
 
           <Route exact path='/login' element={<LoginSignup />} />
