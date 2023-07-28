@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
+import './orderList.css'
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import SideBar from "./Sidebar";
 import { deleteOrder, getAllOrders, clearErrors } from "../../actions/orderAction";
@@ -46,7 +47,7 @@ const OrderList = () => {
     <Fragment>
       <MetaData title={`ALL ORDERS - Admin`} />
 
-      <div className="dashboard">
+      <div className="OrdersPage">
         <SideBar />
         <div className="productListContainer">
           <h1 id="productListHeading">ALL ORDERS</h1>

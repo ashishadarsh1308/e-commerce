@@ -12,6 +12,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     const { products } = useSelector((state) => state.products);
+    const { orders } = useSelector((state) => state.allOrders);
 
     products && products.forEach((product) => {
         if (product.stock === 0) {
@@ -70,8 +71,7 @@ const Dashboard = () => {
                         </Link>
                         <Link to='/admin/orders'>
                             <p>Orders</p>
-                            <p>43212</p>
-                            {/* <p>{orders && orders.length}</p> */}
+                            <p>{orders && orders.length}</p>
                         </Link>
                         <Link to='/admin/users'>
                             <p>Users</p>

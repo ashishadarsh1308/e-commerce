@@ -75,7 +75,7 @@ const NewProduct = () => {
         dispatch(createProduct(data));
     }
 
-    console.log(images);
+    // console.log(images);
 
     // const createProductImagesChange = (e) => {
     //     const files = Array.from(e.target.files);

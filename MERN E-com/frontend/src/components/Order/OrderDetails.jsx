@@ -95,6 +95,19 @@ const OrderDetails = () => {
                                         {order.orderStatus && order.orderStatus}
                                     </p>
                                 </div>
+                                <div>
+                                    <p>Delivered Date:</p>
+                                    {order.deliveredAt && (
+                                        <span>
+                                            {new Date(order.deliveredAt).toLocaleString("en-IN", {
+                                                timeZone: "Asia/Kolkata",
+                                                dateStyle: "short",
+                                                timeStyle: "short",
+                                            })}
+                                        </span>
+                                    )}
+                                </div>
+
                             </div>
                         </div>
 

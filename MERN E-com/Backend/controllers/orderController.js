@@ -124,41 +124,41 @@ exports.allOrders = async (req, res, next) => {
 
 //! Update / Process order => /api/v1/admin/order/:id
 exports.updateOrder = async (req, res, next) => {
-
     try {
-        const order = await Order.findById(req.params.id)
+        const order = await Order.findById(req.params.id);
 
-        if (order.orderStatus === 'Delivered') {
+        if (order.orderStatus === "Delivered") {
             return res.status(400).json({
                 success: false,
-                message: 'You have already delivered this order'
-            })
+                message: "You have already delivered this order",
+            });
         }
 
-        order.orderItems.forEach(async item => {
-            await updateStock(item.product, item.quantity)
-        })
-
-        order.orderStatus = req.body.status
-
-        if (req.body.status === 'Delivered') {
-            order.deliveredAt = Date.now()
+        // Reduce the stock only when the order status is changed to "Shipped"
+        if (order.orderStatus !== "Shipped" && req.body.status === "Shipped") {
+            order.orderItems.forEach(async (item) => {
+                await updateStock(item.product, item.quantity);
+            });
         }
 
+        order.orderStatus = req.body.status;
 
-        await order.save({ validateBeforeSave: false })
+        if (req.body.status === "Delivered") {
+            order.deliveredAt = Date.now();
+        }
+
+        await order.save({ validateBeforeSave: false });
 
         res.status(200).json({
             success: true,
-            message: 'Order updated successfully',
-            order
-        })
-
+            message: "Order updated successfully",
+            order,
+        });
     } catch (error) {
         // Handle any potential errors
         res.status(500).json({
             success: false,
-            message: 'An error occurred',
+            message: "An error occurred",
             error: error.message,
         });
     }
@@ -167,9 +167,10 @@ exports.updateOrder = async (req, res, next) => {
         const product = await Product.findById(id);
         product.stock = product.stock - quantity;
 
-        await product.save({ validateBeforeSave: false })
+        await product.save({ validateBeforeSave: false });
     }
-}
+};
+
 
 //! Delete order => /api/v1/admin/order/:id
 exports.deleteOrder = async (req, res, next) => {
