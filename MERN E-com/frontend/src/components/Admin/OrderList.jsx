@@ -4,23 +4,18 @@ import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import SideBar from "./Sidebar";
-import {
-  deleteOrder,
-  getAllOrders,
-  clearErrors,
-} from "../../actions/orderAction";
+import { deleteOrder, getAllOrders, clearErrors } from "../../actions/orderAction";
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
+import { useNavigate } from "react-router-dom";
 
-const OrderList = ({ history }) => {
+const OrderList = () => {
   const dispatch = useDispatch();
-
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const { error, orders } = useSelector((state) => state.allOrders);
-
   const { error: deleteError, isDeleted } = useSelector((state) => state.order);
 
   const deleteOrderHandler = (id) => {
@@ -40,83 +35,12 @@ const OrderList = ({ history }) => {
 
     if (isDeleted) {
       alert.success("Order Deleted Successfully");
-      history.push("/admin/orders");
+      navigate("/admin/orders");
       dispatch({ type: DELETE_ORDER_RESET });
     }
 
     dispatch(getAllOrders());
-  }, [dispatch, alert, error, deleteError, history, isDeleted]);
-
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
-
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 150,
-      flex: 0.5,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 150,
-      flex: 0.4,
-    },
-
-    {
-      field: "amount",
-      headerName: "Amount",
-      type: "number",
-      minWidth: 270,
-      flex: 0.5,
-    },
-
-    {
-      field: "actions",
-      flex: 0.3,
-      headerName: "Actions",
-      minWidth: 150,
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Fragment>
-            <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
-              <EditIcon />
-            </Link>
-
-            <Button
-              onClick={() =>
-                deleteOrderHandler(params.getValue(params.id, "id"))
-              }
-            >
-              <DeleteIcon />
-            </Button>
-          </Fragment>
-        );
-      },
-    },
-  ];
-
-  const rows = [];
-
-  orders &&
-    orders.forEach((item) => {
-      rows.push({
-        id: item._id,
-        itemsQty: item.orderItems.length,
-        amount: item.totalPrice,
-        status: item.orderStatus,
-      });
-    });
-
-  console.log(orders);
+  }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
 
   return (
     <Fragment>
@@ -129,39 +53,39 @@ const OrderList = ({ history }) => {
           <table>
             <thead>
               <tr>
-                {columns.map((column) => (
-                  <th
-                    key={column.field}
-                    style={{ minWidth: column.minWidth, flex: column.flex }}
-                  >
-                    {column.headerName}
-                  </th>
-                ))}
+                <th style={{ minWidth: 300, flex: 1 }}>Order ID</th>
+                <th style={{ minWidth: 150, flex: 0.5 }}>Status</th>
+                <th style={{ minWidth: 150, flex: 0.4 }}>Items Qty</th>
+                <th style={{ minWidth: 270, flex: 0.5 }}>Amount</th>
+                <th style={{ minWidth: 150, flex: 0.3 }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => {
-                return (
-                  <tr key={row.id}>
-                    {columns.map((column) => {
-                      const value = row[column.field];
-                      return (
-                        <td
-                          key={column.field}
-                          style={{
-                            minWidth: column.minWidth,
-                            flex: column.flex,
-                          }}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </td>
-                      );
-                    })}
+              {orders &&
+                orders.map((order) => (
+                  <tr key={order._id}>
+                    <td style={{ minWidth: 300, flex: 1 }}>{order._id}</td>
+                    <td
+                      style={{
+                        minWidth: 150,
+                        flex: 0.5,
+                        color: order.orderStatus === "Delivered" ? "green" : "red",
+                      }}
+                    >
+                      {order.orderStatus}
+                    </td>
+                    <td style={{ minWidth: 150, flex: 0.4 }}>{order.orderItems.length}</td>
+                    <td style={{ minWidth: 270, flex: 0.5 }}>{order.totalPrice}</td>
+                    <td style={{ minWidth: 150, flex: 0.3 }}>
+                      <Link to={`/admin/order/${order._id}`}>
+                        <AiFillEdit /> Edit
+                      </Link>
+                      <Button onClick={() => deleteOrderHandler(order._id)}>
+                        <AiFillDelete />
+                      </Button>
+                    </td>
                   </tr>
-                );
-              })}
+                ))}
             </tbody>
           </table>
         </div>
