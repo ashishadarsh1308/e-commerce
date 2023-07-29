@@ -1,20 +1,101 @@
-.orderDetailsPage {
-    background-color: white;
-}
-
-.orderDetailsContainer>h1 {
-    font: 300 3vmax "Roboto";
-    margin: 4vmax 0;
-    color: tomato;
-}
-
 .orderDetailsContainer {
-    padding: 5vmax;
-    padding-bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 2vmax;
+    background-color: #f5f5f5;
 }
 
-.orderDetailsContainer>p {
-    font: 400 1.8vmax "Roboto";
+.paymentDetailsContainerBox {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.paymentDetailsContainerBox h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.paymentDetailsContainerBox p {
+    margin: 0;
+}
+
+.greenColor {
+    color: green;
+}
+
+.redColor {
+    color: red;
+}
+
+
+.orderDetailBill table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orderDetailBill th,
+.orderDetailBill td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.orderDetailBill th {
+    background-color: #f7f7f7;
+}
+
+.totalRow {
+    font-weight: bold;
+}
+
+.orderDetailBill a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.orderDetailBill a:hover {
+    text-decoration: underline;
+}
+
+.orderDetailBill b {
+    font-weight: bold;
+}
+
+.orderDetailBill .orderItem {
+    margin-bottom: 5px;
+}
+
+
+.orderDetailBill a:hover {
+    text-decoration: underline;
+}
+
+.orderDetailBill span {
+    font-size: 16px;
+}
+
+.orderDetailBill b {
+    font-weight: bold;
+}
+
+.paymentDetailsContainerBox>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.orderDetailBill {
+    display: flex;
+    flex-direction: column;
 }
 
 .orderDetailsContainerBox,

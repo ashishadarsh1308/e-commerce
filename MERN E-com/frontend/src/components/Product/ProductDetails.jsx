@@ -156,6 +156,11 @@ const ProductDetails = () => {
                                         Add to Cart
                                     </button>
                                 </div>
+                                {product.stock < 10 && product.stock >= 1 && (
+                                    <span className="hurryMessage" style={{ color: 'red' }}>
+                                        Hurry up! Only {product.stock} items left
+                                    </span>
+                                )}
                                 <p>
                                     Status:{" "}
                                     <b className={product.stock < 1 ? "redColor" : "greenColor"}>
