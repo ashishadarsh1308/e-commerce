@@ -32,6 +32,7 @@ const NewProduct = () => {
     // const [imagesPreview, setImagesPreview] = React.useState([]);
 
     const categories = [
+        "Mobile",
         "Electronics",
         "Cameras",
         "Laptop",
