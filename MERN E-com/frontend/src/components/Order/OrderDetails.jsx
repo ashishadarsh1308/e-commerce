@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import './orderDetails.css'
 import { useSelector, useDispatch } from 'react-redux'
 import MetaData from '../layout/MetaData'
@@ -6,10 +6,9 @@ import { Link, useParams } from 'react-router-dom'
 import { useAlert } from 'react-alert'
 import { getOrderDetails, clearErrors } from '../../actions/orderAction'
 import Loader from '../layout/Loader/Loader'
-import PaymentBillPDF from './PaymentBillPDF';
+import { useReactToPrint } from 'react-to-print'
 
 const OrderDetails = () => {
-    const [orderReady, setOrderReady] = useState(false);
     const { id } = useParams()
     const { order, loading, error } = useSelector(state => state.orderDetails);
     const { user } = useSelector((state) => state.user);
@@ -25,31 +24,20 @@ const OrderDetails = () => {
         }
     }, [dispatch, alert, error, id])
 
-    useEffect(() => {
-        if (order) {
-            setOrderReady(true);
+    const componentRef = useRef();
+
+    const generatePDF = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: `Order ${order && order._id}`,
+        onAfterPrint: () => {
+            alert.success('Payment Bill Printed Successfully');
         }
-    }, [order]);
+    });
+
 
     const handleDownloadPDF = () => {
-        if (orderReady) {
-            const pdfData = PaymentBillPDF(order); // Generating the PDF data
-            const blob = new Blob([pdfData], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-
-            // Create a temporary link and trigger the download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Order_${order._id}_Bill.pdf`;
-            document.body.appendChild(a);
-            a.click();
-
-            // Clean up
-            URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
-    };
-    console.log(orderReady)
+        generatePDF();
+    }
 
     return (
         <Fragment>
@@ -109,94 +97,96 @@ const OrderDetails = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="paymentDetailsContainerBox">
-                                <h4>Payment Bill:</h4>
-                                <hr style={{ marginBottom: '15px' }} />
-                                <div>
-                                    <p
-                                        className={
-                                            order.paymentInfo &&
+                            <div ref={componentRef} >
+                                <div className="paymentDetailsContainerBox">
+                                    <h4>Payment Bill:</h4>
+                                    <hr style={{ marginBottom: '15px' }} />
+                                    <div>
+                                        <p
+                                            className={
+                                                order.paymentInfo &&
+                                                    order.paymentInfo.status === "succeeded"
+                                                    ? "greenColor"
+                                                    : "redColor"
+                                            }
+                                        >
+                                            {order.paymentInfo &&
                                                 order.paymentInfo.status === "succeeded"
-                                                ? "greenColor"
-                                                : "redColor"
-                                        }
-                                    >
-                                        {order.paymentInfo &&
-                                            order.paymentInfo.status === "succeeded"
-                                            ? "PAID"
-                                            : "NOT PAID"}
-                                    </p>
+                                                ? "PAID"
+                                                : "NOT PAID"}
+                                        </p>
+                                    </div>
+
+
+                                    <div>
+                                        <p>Name:</p>
+                                        <span>{order?.user && user?.name}</span>
+                                    </div>
+                                    <div>
+                                        <p>Phone:</p>
+                                        <span>
+                                            {order.shippingInfo && order.shippingInfo.phoneNo}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p>Delivery Address:</p>
+                                        <span>
+                                            {order.shippingInfo &&
+                                                `${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.postalCode}`}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p>Order ID:</p>
+                                        <span>{order && order._id}</span>
+                                    </div>
+                                    <div className='orderDetailBill'>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {order.orderItems &&
+                                                    order.orderItems.map((item) => (
+                                                        <tr key={item._id} className="orderItem">
+                                                            <td>
+                                                                <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                                            </td>
+                                                            <td>{item.quantity}</td>
+                                                            <td>₹{item.price}</td>
+                                                            <td>₹{item.price * item.quantity}</td>
+                                                        </tr>
+                                                    ))}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colSpan="3">Total:</td>
+                                                    <td>₹{order.itemsPrice}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan="3">Tax Price:</td>
+                                                    <td>₹{order.taxPrice}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan="3">Shipping Price:</td>
+                                                    <td>₹{order.shippingPrice}</td>
+                                                </tr>
+                                                <tr className='totalRow'>
+                                                    <td colSpan="3">Gross Total:</td>
+                                                    <td>₹{order.totalPrice}</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <p>Name:</p>
-                                    <span>{order?.user && user?.name}</span>
-                                </div>
-                                <div>
-                                    <p>Phone:</p>
-                                    <span>
-                                        {order.shippingInfo && order.shippingInfo.phoneNo}
-                                    </span>
-                                </div>
-                                <div>
-                                    <p>Delivery Address:</p>
-                                    <span>
-                                        {order.shippingInfo &&
-                                            `${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.postalCode}`}
-                                    </span>
-                                </div>
-                                <div>
-                                    <p>Order ID:</p>
-                                    <span>{order && order._id}</span>
-                                </div>
-                                <div className='orderDetailBill'>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Quantity</th>
-                                                <th>Unit Price</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {order.orderItems &&
-                                                order.orderItems.map((item) => (
-                                                    <tr key={item._id} className="orderItem">
-                                                        <td>
-                                                            <Link to={`/product/${item.product}`}>{item.name}</Link>
-                                                        </td>
-                                                        <td>{item.quantity}</td>
-                                                        <td>₹{item.price}</td>
-                                                        <td>₹{item.price * item.quantity}</td>
-                                                    </tr>
-                                                ))}
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colSpan="3">Total:</td>
-                                                <td>₹{order.itemsPrice}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="3">Tax Price:</td>
-                                                <td>₹{order.taxPrice}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="3">Shipping Price:</td>
-                                                <td>₹{order.shippingPrice}</td>
-                                            </tr>
-                                            <tr className='totalRow'>
-                                                <td colSpan="3">Gross Total:</td>
-                                                <td>₹{order.totalPrice}</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                {orderReady && (
-                                    <button onClick={() => handleDownloadPDF(order)}>Download PDF</button>
+                                <button onClick={() => handleDownloadPDF()}>Download PDF</button>
 
-                                )}
+
                             </div>
                         </div>
 
